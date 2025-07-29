@@ -1,5 +1,5 @@
 // ====== CONFIG ======
-const API_URL = "https://script.google.com/macros/s/AKfycbxs43gvdb9SyVmF50XW2kr_f9_ylg1Pp2hMNeXtmeCMB-Tp-cFa043-7xlLzdpi7iIl9Q/exec
+const API_URL = "https://script.google.com/macros/s/AKfycbyfwE1yfvhTNrLtn0SuWkxhqxhj_Bc9atQeIwtekhXh-NuT3r-Ko42gr9oPWZ-1Fa3NMg/exec
 "; // Replace with your deployed Apps Script Web App URL
 
 // ====== INITIAL LOAD ======
