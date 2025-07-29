@@ -1,5 +1,6 @@
 // ====== CONFIG ======
-const API_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL"; // Replace with your deployed Apps Script Web App URL
+const API_URL = "https://script.google.com/macros/s/AKfycbxs43gvdb9SyVmF50XW2kr_f9_ylg1Pp2hMNeXtmeCMB-Tp-cFa043-7xlLzdpi7iIl9Q/exec
+"; // Replace with your deployed Apps Script Web App URL
 
 // ====== INITIAL LOAD ======
 document.addEventListener('DOMContentLoaded', () => {
