@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Visit Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Customer Visit Management</h1>
+    <form id="visitForm">
+      <label>
+        Sales Rep:
+        <select id="salesRep" required>
+          <option value="">Loading...</option>
+        </select>
+      </label>
+      <label>
+        <input type="checkbox" id="isNewCustomer"/>
+        New Customer
+      </label>
+      <div id="newCustomerFields" style="display:none;">
+        <label>
+          Customer Name:
+          <input type="text" id="newCustomerName"/>
+        </label>
+        <label>
+          Area:
+          <input type="text" id="newCustomerArea"/>
+        </label>
+        <label>
+          Province:
+          <input type="text" id="newCustomerProvince"/>
+        </label>
+      </div>
+      <div id="existingCustomerFields">
+        <label>
+          Customer:
+          <select id="customer" required>
+            <option value="">Select sales rep first</option>
+          </select>
+        </label>
+        <div id="lastVisitDiv"></div>
+      </div>
+      <label>
+        Date of Visit:
+        <input type="date" id="visitDate" required/>
+      </label>
+      <label>Brands/Units:</label>
+      <table id="brandsTable">
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>No. of Units</th>
+          </tr>
+        </thead>
+        <tbody id="brandsBody">
+          <tr>
+            <td>
+              <select class="brandSelect" required></select>
+            </td>
+            <td>
+              <input type="number" min="0" class="unitsInput" required/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" id="addBrandRow">Add Brand</button>
+      <label>
+        Notes:
+        <textarea id="notes"></textarea>
+      </label>
+      <label>
+        Follow-up Required:
+        <input type="checkbox" id="followUp"/>
+      </label>
+      <br/>
+      <button type="submit">Record Visit</button>
+    </form>
+    <div id="message"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
