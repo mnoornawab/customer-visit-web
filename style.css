@@ -49,3 +49,34 @@ button:hover {
   margin-top: 1rem;
   text-align: center;
 }
+.sales-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.sales-summary-table th, .sales-summary-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.sales-summary-table th {
+  background-color: #f5f5f5;
+}
+
+.over {
+  color: green;
+  font-weight: bold;
+}
+
+.achieved {
+  color: darkblue;
+  font-weight: bold;
+}
+
+.under {
+  color: red;
+  font-weight: bold;
+}
