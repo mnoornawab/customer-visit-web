@@ -64,12 +64,66 @@ function loadBrands() {
 // ====== LOAD LAST VISIT ======
 function loadLastVisit() {
   const customer = document.getElementById('customer').value;
-  const div = document.getElementById('lastVisitDiv');
-  if (!customer) { div.textContent = ""; return; }
+  const lastVisitDiv = document.getElementById('lastVisitDiv');
+  const salesDiv = document.getElementById('salesSummaryDiv');
+
+  lastVisitDiv.textContent = "";
+  salesDiv.innerHTML = "";
+
+  if (!customer) return;
+
+  // Load Last Visit
   fetch(`${API_URL}?action=getCustomerLastVisit&customer=${encodeURIComponent(customer)}`)
     .then(res => res.json())
     .then(data => {
-      div.textContent = data.lastVisit ? `Last Visit: ${data.lastVisit}` : '';
+      lastVisitDiv.textContent = data.lastVisit ? `Last Visit: ${data.lastVisit}` : '';
+    });
+
+  // Load Sales Summary
+  fetch(`${API_URL}?action=getCustomerSalesSummary&customer=${encodeURIComponent(customer)}`)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.summary || data.summary.length === 0) {
+        salesDiv.innerHTML = `<p>No sales data available for this customer.</p>`;
+        return;
+      }
+
+      let html = `
+        <h4>📊 Sales Summary</h4>
+        <table class="sales-summary-table">
+          <thead>
+            <tr>
+              <th>Brand</th>
+              <th>2024 Units</th>
+              <th>2024 Value</th>
+              <th>2025 Units</th>
+              <th>2025 Value</th>
+              <th>Target</th>
+              <th>Diff</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      data.summary.forEach(row => {
+        const statusClass = row.status === 'Overachieved' ? 'over' :
+                            row.status === 'Achieved' ? 'achieved' : 'under';
+        html += `
+          <tr>
+            <td>${row.brand}</td>
+            <td>${row.units2024 || 0}</td>
+            <td>R ${Number(row.value2024 || 0).toFixed(2)}</td>
+            <td>${row.units2025 || 0}</td>
+            <td>R ${Number(row.value2025 || 0).toFixed(2)}</td>
+            <td>R ${Number(row.target2025 || 0).toFixed(2)}</td>
+            <td>R ${Number(row.difference || 0).toFixed(2)}</td>
+            <td><span class="${statusClass}">${row.status}</span></td>
+          </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      salesDiv.innerHTML = html;
     });
 }
 
