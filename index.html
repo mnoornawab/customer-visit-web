@@ -133,6 +133,42 @@
       margin-bottom: 0.5em;
       margin-top: 0.2em;
     }
+    .sales-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 0.95em;
+}
+
+.sales-summary-table th,
+.sales-summary-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: center;
+}
+
+.sales-summary-table th {
+  background: #f0f0f0;
+}
+
+.sales-summary-table td {
+  background: #fff;
+}
+
+.sales-summary-table td span.over {
+  color: green;
+  font-weight: bold;
+}
+
+.sales-summary-table td span.achieved {
+  color: #0077cc;
+  font-weight: bold;
+}
+
+.sales-summary-table td span.under {
+  color: red;
+  font-weight: bold;
+}
   </style>
 </head>
 <body>
@@ -171,6 +207,7 @@
           </select>
         </label>
         <div id="lastVisitDiv"></div>
+        <div id="salesSummaryDiv" style="margin-top: 1em;"></div>
       </div>
       <label>
         Date of Visit:
