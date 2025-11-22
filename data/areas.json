@@ -1,7 +1,0 @@
-[
-    {"id": 1, "name": "Downtown", "salesRepId": 1, "province": "Province A"},
-    {"id": 2, "name": "Westside", "salesRepId": 1, "province": "Province A"},
-    {"id": 3, "name": "East End", "salesRepId": 2, "province": "Province B"},
-    {"id": 4, "name": "North Hills", "salesRepId": 3, "province": "Province C"},
-    {"id": 5, "name": "South Park", "salesRepId": 4, "province": "Province D"}
-]
