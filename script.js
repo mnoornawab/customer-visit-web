@@ -166,7 +166,15 @@ class CustomerVisitApp {
         document.getElementById('backStep5').addEventListener('click', () => {
             this.showStep(4);
         });
-
+// Add this to your existing setupEventListeners method
+document.getElementById('clearData').addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear ALL saved data? This cannot be undone.')) {
+        localStorage.removeItem('customerVisits');
+        alert('All data has been cleared successfully.');
+        console.log('🗑️ All data cleared');
+    }
+});
+        
         // Step 6: Follow-up
         document.querySelectorAll('input[name="followup"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
