@@ -1,82 +1,224 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f6f9fb;
-  margin: 0;
-  padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
 }
+
 .container {
-  max-width: 600px;
-  margin: 2rem auto;
-  background: #fff;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px #e0e0e0;
-}
-h1 {
-  text-align: center;
-}
-form label {
-  display: block;
-  margin: 1rem 0 0.5rem 0;
-}
-input[type="text"], input[type="date"], select, textarea {
-  width: 100%;
-  padding: 0.4rem;
-  margin-bottom: 0.4rem;
-}
-.brand-table, table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1rem;
-}
-.brand-table th, table th, .brand-table td, table td {
-  border: 1px solid #ddd;
-  padding: 0.5rem;
-}
-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-button:hover {
-  background: #115293;
-}
-#message {
-  margin-top: 1rem;
-  text-align: center;
-}
-.sales-summary-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
 }
 
-.sales-summary-table th, .sales-summary-table td {
-  border: 1px solid #ccc;
-  padding: 6px;
-  text-align: center;
-  font-size: 14px;
+header {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: white;
+    padding: 30px;
+    text-align: center;
 }
 
-.sales-summary-table th {
-  background-color: #f5f5f5;
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
 }
 
-.over {
-  color: green;
-  font-weight: bold;
+.step {
+    padding: 40px;
+    display: none;
 }
 
-.achieved {
-  color: darkblue;
-  font-weight: bold;
+.step.active {
+    display: block;
 }
 
-.under {
-  color: red;
-  font-weight: bold;
+.step h2 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 5px;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.btn-primary:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #219a52;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+    padding: 10px;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid #3498db;
+    color: #3498db;
+}
+
+.btn-outline:hover {
+    background: #3498db;
+    color: white;
+}
+
+.date-selector {
+    margin-bottom: 20px;
+}
+
+.date-selector label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.brand-entry {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.brand-select {
+    flex: 2;
+}
+
+.stock-columns {
+    flex: 2;
+    display: flex;
+    gap: 10px;
+}
+
+.stock-columns input {
+    flex: 1;
+}
+
+.radio-group {
+    margin: 20px 0;
+}
+
+.radio-group label {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.radio-group input {
+    margin-right: 8px;
+}
+
+.notes-section, .date-section {
+    margin: 20px 0;
+}
+
+.notes-section textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.navigation-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.success-message {
+    text-align: center;
+    padding: 60px 40px;
+    color: #27ae60;
+}
+
+.success-message h2 {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        border-radius: 10px;
+    }
+    
+    .step {
+        padding: 20px;
+    }
+    
+    .brand-entry {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .stock-columns {
+        flex-direction: row;
+    }
+    
+    .navigation-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
 }
