@@ -7,41 +7,42 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-    <!-- Progress Bar -->
-<div class="progress-container">
-    <div class="progress-bar">
-        <div class="progress-line" id="progressLine"></div>
-        <div class="progress-step active" data-step="1">
-            <span>1</span>
-            <div class="step-label">Sales Rep</div>
-        </div>
-        <div class="progress-step" data-step="2">
-            <span>2</span>
-            <div class="step-label">Area</div>
-        </div>
-        <div class="progress-step" data-step="3">
-            <span>3</span>
-            <div class="step-label">Customer</div>
-        </div>
-        <div class="progress-step" data-step="4">
-            <span>4</span>
-            <div class="step-label">Stock</div>
-        </div>
-        <div class="progress-step" data-step="5">
-            <span>5</span>
-            <div class="step-label">Marketing</div>
-        </div>
-        <div class="progress-step" data-step="6">
-            <span>6</span>
-            <div class="step-label">Follow-up</div>
-        </div>
-    </div>
-</div>
 <body>
     <div class="container">
         <header>
             <h1><i class="fas fa-users"></i> Customer Visit App</h1>
         </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-line" id="progressLine"></div>
+                <div class="progress-step active" data-step="1">
+                    <span>1</span>
+                    <div class="step-label">Sales Rep</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <span>2</span>
+                    <div class="step-label">Area</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <span>3</span>
+                    <div class="step-label">Customer</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <span>4</span>
+                    <div class="step-label">Stock</div>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <span>5</span>
+                    <div class="step-label">Marketing</div>
+                </div>
+                <div class="progress-step" data-step="6">
+                    <span>6</span>
+                    <div class="step-label">Follow-up</div>
+                </div>
+            </div>
+        </div>
 
         <!-- Step 1: Sales Rep Selection -->
         <div id="step1" class="step active">
@@ -49,7 +50,7 @@
             <select id="salesRep" class="form-control">
                 <option value="">Choose Sales Rep...</option>
             </select>
-            <button id="nextStep1" class="btn btn-primary" disabled>Next</button>
+            <button id="nextStep1" class="btn btn-primary" disabled>Next <i class="fas fa-arrow-right"></i></button>
         </div>
 
         <!-- Step 2: Area Selection -->
@@ -58,8 +59,10 @@
             <select id="area" class="form-control">
                 <option value="">Choose Area...</option>
             </select>
-            <button id="nextStep2" class="btn btn-primary" disabled>Next</button>
-            <button id="backStep2" class="btn btn-secondary">Back</button>
+            <div class="navigation-buttons">
+                <button id="nextStep2" class="btn btn-primary" disabled>Next <i class="fas fa-arrow-right"></i></button>
+                <button id="backStep2" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
         </div>
 
         <!-- Step 3: Customer Selection -->
@@ -72,8 +75,10 @@
             <select id="customer" class="form-control">
                 <option value="">Choose Customer...</option>
             </select>
-            <button id="nextStep3" class="btn btn-primary" disabled>Next</button>
-            <button id="backStep3" class="btn btn-secondary">Back</button>
+            <div class="navigation-buttons">
+                <button id="nextStep3" class="btn btn-primary" disabled>Next <i class="fas fa-arrow-right"></i></button>
+                <button id="backStep3" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
         </div>
 
         <!-- Step 4: Stock on Hand -->
@@ -93,40 +98,51 @@
             </div>
             <button id="addBrand" class="btn btn-outline"><i class="fas fa-plus"></i> Add Another Brand</button>
             <div class="navigation-buttons">
-                <button id="nextStep4" class="btn btn-primary">Next</button>
-                <button id="backStep4" class="btn btn-secondary">Back</button>
+                <button id="nextStep4" class="btn btn-primary">Next <i class="fas fa-arrow-right"></i></button>
+                <button id="backStep4" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</button>
             </div>
         </div>
 
         <!-- Step 5: Marketing Support -->
         <div id="step5" class="step">
             <h2>Marketing Support</h2>
+            <p class="step-description">Does this customer need marketing support?</p>
             <div class="radio-group">
                 <label>
-                    <input type="radio" name="marketing" value="yes"> Yes
+                    <input type="radio" name="marketing" value="yes">
+                    <span class="radio-custom"></span>
+                    Yes
                 </label>
                 <label>
-                    <input type="radio" name="marketing" value="no"> No
+                    <input type="radio" name="marketing" value="no">
+                    <span class="radio-custom"></span>
+                    No
                 </label>
             </div>
             <div id="marketingNotes" class="notes-section" style="display: none;">
+                <label for="marketingNotesText">Marketing Support Notes:</label>
                 <textarea id="marketingNotesText" placeholder="Enter marketing support notes..." class="form-control"></textarea>
             </div>
             <div class="navigation-buttons">
-                <button id="nextStep5" class="btn btn-primary" disabled>Next</button>
-                <button id="backStep5" class="btn btn-secondary">Back</button>
+                <button id="nextStep5" class="btn btn-primary" disabled>Next <i class="fas fa-arrow-right"></i></button>
+                <button id="backStep5" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</button>
             </div>
         </div>
 
         <!-- Step 6: Follow-up Visit -->
         <div id="step6" class="step">
             <h2>Follow-up Visit</h2>
+            <p class="step-description">Does this customer need a follow-up visit?</p>
             <div class="radio-group">
                 <label>
-                    <input type="radio" name="followup" value="yes"> Yes
+                    <input type="radio" name="followup" value="yes">
+                    <span class="radio-custom"></span>
+                    Yes
                 </label>
                 <label>
-                    <input type="radio" name="followup" value="no"> No
+                    <input type="radio" name="followup" value="no">
+                    <span class="radio-custom"></span>
+                    No
                 </label>
             </div>
             <div id="followupDateSection" class="date-section" style="display: none;">
@@ -134,11 +150,12 @@
                 <input type="date" id="followupDate" class="form-control">
             </div>
             <div id="followupReasonSection" class="notes-section" style="display: none;">
-                <textarea id="followupReason" placeholder="Reason for no follow-up..." class="form-control"></textarea>
+                <label for="followupReason">Reason for no follow-up:</label>
+                <textarea id="followupReason" placeholder="Enter reason for no follow-up visit..." class="form-control"></textarea>
             </div>
             <div class="navigation-buttons">
-                <button id="submitForm" class="btn btn-success">Submit Form</button>
-                <button id="backStep6" class="btn btn-secondary">Back</button>
+                <button id="submitForm" class="btn btn-success"><i class="fas fa-check"></i> Submit Form</button>
+                <button id="backStep6" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</button>
             </div>
         </div>
 
@@ -146,7 +163,8 @@
         <div id="successMessage" class="success-message" style="display: none;">
             <h2><i class="fas fa-check-circle"></i> Form Submitted Successfully!</h2>
             <p>Your customer visit data has been saved.</p>
-            <button id="newVisit" class="btn btn-primary">Start New Visit</button>
+            <button id="newVisit" class="btn btn-primary"><i class="fas fa-plus"></i> Start New Visit</button>
+            <button id="downloadCSV" class="btn btn-outline"><i class="fas fa-download"></i> Download Excel Data</button>
         </div>
     </div>
 
