@@ -73,7 +73,7 @@ header h1 i {
     color: var(--success);
 }
 
-/* Step Progress Bar */
+/* Progress Bar */
 .progress-container {
     padding: 1.5rem 2rem;
     background: var(--light);
@@ -181,7 +181,7 @@ header h1 i {
 
 .step h2 {
     color: var(--dark);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-size: 1.75rem;
     font-weight: 600;
     position: relative;
@@ -197,6 +197,12 @@ header h1 i {
     height: 4px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     border-radius: 2px;
+}
+
+.step-description {
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
 }
 
 /* Form Controls */
@@ -380,6 +386,7 @@ header h1 i {
     transition: var(--transition);
     font-weight: 500;
     border: 2px solid transparent;
+    position: relative;
 }
 
 .radio-group label:hover {
@@ -389,15 +396,40 @@ header h1 i {
 }
 
 .radio-group input[type="radio"] {
-    width: 20px;
-    height: 20px;
-    accent-color: var(--primary);
+    position: absolute;
+    opacity: 0;
 }
 
-.radio-group input[type="radio"]:checked + label {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
+.radio-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--gray);
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    transition: var(--transition);
+}
+
+.radio-group input[type="radio"]:checked + .radio-custom {
     border-color: var(--primary);
+    background: var(--primary);
+}
+
+.radio-group input[type="radio"]:checked + .radio-custom::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.radio-group input[type="radio"]:checked ~ span {
+    color: var(--primary);
+    font-weight: 600;
 }
 
 /* Notes and Date Sections */
@@ -421,6 +453,14 @@ header h1 i {
     height: 120px;
     resize: vertical;
     line-height: 1.5;
+}
+
+.notes-section label,
+.date-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark);
 }
 
 /* Navigation Buttons */
@@ -460,6 +500,10 @@ header h1 i {
     font-size: 1.1rem;
     color: var(--gray);
     margin-bottom: 2rem;
+}
+
+.success-message .btn {
+    margin: 0.5rem;
 }
 
 /* Mobile Responsive Styles */
@@ -574,32 +618,6 @@ header h1 i {
     }
 }
 
-/* Loading States */
-.loading {
-    opacity: 0.7;
-    pointer-events: none;
-    position: relative;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--gray-light);
-    border-top: 2px solid var(--primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    transform: translate(-50%, -50%);
-}
-
-@keyframes spin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
 /* Custom Select Styling */
 select.form-control {
     appearance: none;
@@ -615,17 +633,4 @@ select.form-control {
 .form-control:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
-}
-
-/* Print Styles */
-@media print {
-    .navigation-buttons,
-    .btn {
-        display: none !important;
-    }
-    
-    .step {
-        display: block !important;
-        page-break-inside: avoid;
-    }
 }
