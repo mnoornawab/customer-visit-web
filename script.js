@@ -30,14 +30,19 @@ class CustomerVisitApp {
     constructor() {
         this.currentStep = 1;
         this.formData = {
-            salesRep: '',
+            salesRepId: '',
+            salesRepName: '',
             area: '',
-            customer: '',
+            province: '',
+            customerId: '',
+            customerName: '',
             visitDate: new Date().toISOString().split('T')[0],
             stock: [],
             marketing: { needed: false, notes: '' },
-            followup: { needed: false, date: '', reason: '' }
+            followup: { needed: false, date: '', reason: '' },
+            timestamp: ''
         };
+        this.currentCustomers = []; // Store filtered customers
         this.init();
     }
 
@@ -67,7 +72,10 @@ class CustomerVisitApp {
     setupEventListeners() {
         // Step 1: Sales Rep
         document.getElementById('salesRep').addEventListener('change', (e) => {
-            this.formData.salesRep = e.target.value;
+            this.formData.salesRepId = e.target.value;
+            const selectedRep = APP_DATA.salesReps.find(rep => rep.id == e.target.value);
+            this.formData.salesRepName = selectedRep ? selectedRep.name : '';
+            
             const nextBtn = document.getElementById('nextStep1');
             nextBtn.disabled = !e.target.value;
         });
@@ -95,7 +103,11 @@ class CustomerVisitApp {
 
         // Step 3: Customer
         document.getElementById('customer').addEventListener('change', (e) => {
-            this.formData.customer = e.target.value;
+            this.formData.customerId = e.target.value;
+            const selectedCustomer = this.currentCustomers.find(cust => cust.id == e.target.value);
+            this.formData.customerName = selectedCustomer ? selectedCustomer.name : '';
+            this.formData.province = selectedCustomer ? selectedCustomer.province : '';
+            
             const nextBtn = document.getElementById('nextStep3');
             nextBtn.disabled = !e.target.value;
         });
@@ -165,10 +177,12 @@ class CustomerVisitApp {
                     dateSection.style.display = 'block';
                     reasonSection.style.display = 'none';
                     this.formData.followup.needed = true;
+                    this.formData.followup.reason = '';
                 } else {
                     dateSection.style.display = 'none';
                     reasonSection.style.display = 'block';
                     this.formData.followup.needed = false;
+                    this.formData.followup.date = '';
                 }
             });
         });
@@ -182,8 +196,10 @@ class CustomerVisitApp {
         });
 
         document.getElementById('submitForm').addEventListener('click', () => {
-            this.saveData();
-            this.showStep(7); // Success step
+            if (this.validateForm()) {
+                this.saveData();
+                this.showStep(7); // Success step
+            }
         });
 
         document.getElementById('backStep6').addEventListener('click', () => {
@@ -200,8 +216,24 @@ class CustomerVisitApp {
         });
     }
 
+    validateForm() {
+        // Check if follow-up date is provided when needed
+        if (this.formData.followup.needed && !this.formData.followup.date) {
+            alert('Please select a follow-up date');
+            return false;
+        }
+        
+        // Check if reason is provided when no follow-up is needed
+        if (!this.formData.followup.needed && !this.formData.followup.reason) {
+            alert('Please provide a reason for no follow-up visit');
+            return false;
+        }
+        
+        return true;
+    }
+
     loadAreas() {
-        const salesRepId = parseInt(this.formData.salesRep);
+        const salesRepId = parseInt(this.formData.salesRepId);
         const areas = [...new Set(
             APP_DATA.customers
                 .filter(customer => customer.salesRepIds.includes(salesRepId))
@@ -220,17 +252,17 @@ class CustomerVisitApp {
     }
 
     loadCustomers() {
-        const salesRepId = parseInt(this.formData.salesRep);
+        const salesRepId = parseInt(this.formData.salesRepId);
         const area = this.formData.area;
         
-        const customers = APP_DATA.customers.filter(customer => 
+        this.currentCustomers = APP_DATA.customers.filter(customer => 
             customer.salesRepIds.includes(salesRepId) && customer.area === area
         );
 
         const customerSelect = document.getElementById('customer');
         customerSelect.innerHTML = '<option value="">Choose Customer...</option>';
         
-        customers.forEach(customer => {
+        this.currentCustomers.forEach(customer => {
             const option = document.createElement('option');
             option.value = customer.id;
             option.textContent = customer.name;
@@ -301,59 +333,103 @@ class CustomerVisitApp {
     }
 
     saveData() {
-        // Save to browser's local storage
-        const visits = JSON.parse(localStorage.getItem('customerVisits') || '[]');
-        visits.push(this.formData);
-        localStorage.setItem('customerVisits', JSON.stringify(visits));
-        console.log('Data saved:', this.formData);
+        // Add timestamp
+        this.formData.timestamp = new Date().toISOString();
+        
+        // Get existing visits or initialize empty array
+        let visits = [];
+        try {
+            const stored = localStorage.getItem('customerVisits');
+            if (stored) {
+                visits = JSON.parse(stored);
+            }
+        } catch (e) {
+            console.error('Error reading stored data:', e);
+        }
+        
+        // Add new visit
+        visits.push({...this.formData});
+        
+        // Save back to localStorage
+        try {
+            localStorage.setItem('customerVisits', JSON.stringify(visits));
+            console.log('✅ Data saved successfully!', this.formData);
+            console.log('Total visits stored:', visits.length);
+        } catch (e) {
+            console.error('Error saving data:', e);
+            alert('Error saving data. Please try again.');
+        }
     }
 
     downloadCSV() {
-        const visits = JSON.parse(localStorage.getItem('customerVisits') || '[]');
+        let visits = [];
+        try {
+            const stored = localStorage.getItem('customerVisits');
+            if (stored) {
+                visits = JSON.parse(stored);
+            }
+        } catch (e) {
+            console.error('Error reading data for download:', e);
+        }
+
         if (visits.length === 0) {
-            alert('No data to download');
+            alert('No data available to download. Please submit a form first.');
             return;
         }
 
-        let csv = 'Sales Rep,Area,Customer,Visit Date,Brand,Optical Stock,Sunglass Stock,Marketing Needed,Marketing Notes,Followup Needed,Followup Date,Followup Reason\n';
+        // Create CSV header
+        let csv = 'Sales Rep,Area,Province,Customer,Visit Date,Brand,Optical Stock,Sunglass Stock,Marketing Needed,Marketing Notes,Followup Needed,Followup Date,Followup Reason,Timestamp\n';
         
+        // Add data rows
         visits.forEach(visit => {
             if (visit.stock && visit.stock.length > 0) {
                 visit.stock.forEach(stock => {
-                    csv += `"${visit.salesRep}","${visit.area}","${visit.customer}","${visit.visitDate}","${stock.brand}",${stock.optical},${stock.sunglass},${visit.marketing.needed},"${visit.marketing.notes}",${visit.followup.needed},"${visit.followup.date}","${visit.followup.reason}"\n`;
+                    csv += `"${visit.salesRepName}","${visit.area}","${visit.province}","${visit.customerName}","${visit.visitDate}","${stock.brand}",${stock.optical},${stock.sunglass},${visit.marketing.needed},"${visit.marketing.notes}",${visit.followup.needed},"${visit.followup.date}","${visit.followup.reason}","${visit.timestamp}"\n`;
                 });
             } else {
-                csv += `"${visit.salesRep}","${visit.area}","${visit.customer}","${visit.visitDate}","",0,0,${visit.marketing.needed},"${visit.marketing.notes}",${visit.followup.needed},"${visit.followup.date}","${visit.followup.reason}"\n`;
+                csv += `"${visit.salesRepName}","${visit.area}","${visit.province}","${visit.customerName}","${visit.visitDate}","",0,0,${visit.marketing.needed},"${visit.marketing.notes}",${visit.followup.needed},"${visit.followup.date}","${visit.followup.reason}","${visit.timestamp}"\n`;
             }
         });
 
-        // Download the CSV file
+        // Create and download the file
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'customer_visits.csv';
+        a.download = `customer_visits_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
+        
+        console.log('📊 CSV downloaded with', visits.length, 'records');
     }
 
     resetForm() {
         // Reset form data
         this.formData = {
-            salesRep: '',
+            salesRepId: '',
+            salesRepName: '',
             area: '',
-            customer: '',
+            province: '',
+            customerId: '',
+            customerName: '',
             visitDate: new Date().toISOString().split('T')[0],
             stock: [],
             marketing: { needed: false, notes: '' },
-            followup: { needed: false, date: '', reason: '' }
+            followup: { needed: false, date: '', reason: '' },
+            timestamp: ''
         };
+        
+        this.currentCustomers = [];
 
         // Reset form elements
         document.getElementById('salesRep').value = '';
         document.getElementById('area').innerHTML = '<option value="">Choose Area...</option>';
         document.getElementById('customer').innerHTML = '<option value="">Choose Customer...</option>';
         document.getElementById('visitDate').value = this.formData.visitDate;
+        
+        // Reset brand entries
         document.getElementById('brandEntries').innerHTML = `
             <div class="brand-row">
                 <select class="brand-select form-control">
@@ -379,6 +455,8 @@ class CustomerVisitApp {
 
         // Go back to step 1
         this.showStep(1);
+        
+        console.log('🔄 Form reset successfully');
     }
 
     showStep(stepNumber) {
@@ -388,8 +466,13 @@ class CustomerVisitApp {
         });
         
         // Show current step
-        document.getElementById(`step${stepNumber}`).classList.add('active');
-        this.currentStep = stepNumber;
+        const stepElement = document.getElementById(`step${stepNumber}`);
+        if (stepElement) {
+            stepElement.classList.add('active');
+            this.currentStep = stepNumber;
+        } else {
+            console.error('Step element not found:', `step${stepNumber}`);
+        }
     }
 }
 
