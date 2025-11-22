@@ -1,34 +1,31 @@
-# Customer Visit Web (Plain HTML/JS Frontend)
+# Customer Visit App
 
-A simple static web app for logging customer visits, hosted on GitHub Pages and connected to Google Sheets via a Google Apps Script Web App.
+A web-based application for sales representatives to record customer visits, stock counts, and follow-up requirements.
 
 ## Features
 
-- Sales rep selection
-- Loads assigned customers per rep
-- Visit form (brands, units, notes, follow-up)
-- Supports adding new customers
-- Shows last visit date
-- Deployable to GitHub Pages
+- **Multi-step Form**: Guided process for data entry
+- **Sales Rep Management**: Load customers based on sales rep and area
+- **Stock Counting**: Track optical and sunglass stock for multiple brands
+- **Marketing Support**: Record marketing needs and notes
+- **Follow-up Management**: Schedule follow-up visits with reasons
+- **Data Export**: Automatic CSV generation for Excel compatibility
 
-## Setup
+## Setup for GitHub Pages
 
-1. Clone this repo.
-2. Deploy your [Google Apps Script Web App](https://developers.google.com/apps-script/guides/web) that exposes endpoints:
-   - `getSalesReps`
-   - `getCustomersByRep`
-   - `getBrands`
-   - `getCustomerLastVisit`
-   - `recordVisit`
-3. In `script.js`, set your `API_URL` to your Apps Script Web App URL.
-4. Push to GitHub and enable GitHub Pages (e.g., from `main` branch `/root`).
-5. Use your app at `https://YOUR_GITHUB_USERNAME.github.io/customer-visit-web/`.
+1. Create a new GitHub repository
+2. Upload all files to the repository
+3. Enable GitHub Pages in repository settings
+4. The app will be available at `https://[username].github.io/[repository-name]`
 
-## Backend Integration
+## Data Storage
 
-- The backend is a Google Apps Script Web App that you control.
-- See `/backend` or repo [customer-visit-management-scripts](https://github.com/YOUR_GITHUB_USERNAME/customer-visit-management-scripts) for Apps Script samples.
+- Data is stored in browser's localStorage
+- CSV data can be downloaded using `downloadCSV()` function in browser console
+- For production use, integrate with a backend service
 
----
+## Customization
 
-**Maintained by [YOUR_GITHUB_USERNAME](https://github.com/YOUR_GITHUB_USERNAME)**
+- Edit JSON files in `/data` folder to add your sales reps, areas, and customers
+- Modify brands list in `script.js`
+- Customize styling in `styles.css`
