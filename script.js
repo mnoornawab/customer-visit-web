@@ -254,6 +254,37 @@ class CustomerVisitApp {
         });
     }
 
+    updateProgressBar() {
+    const progressSteps = document.querySelectorAll('.progress-step');
+    const progressLine = document.getElementById('progressLine');
+    
+    // Calculate progress percentage
+    const progressPercent = ((this.currentStep - 1) / (progressSteps.length - 1)) * 100;
+    progressLine.style.width = `${progressPercent}%`;
+    
+    // Update step states
+    progressSteps.forEach((step, index) => {
+        const stepNumber = parseInt(step.dataset.step);
+        
+        step.classList.remove('active', 'completed');
+        
+        if (stepNumber === this.currentStep) {
+            step.classList.add('active');
+        } else if (stepNumber < this.currentStep) {
+            step.classList.add('completed');
+        }
+    });
+}
+
+goToStep(step) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById(`step${step}`).classList.add('active');
+    this.currentStep = step;
+    this.updateProgressBar();
+    
+    // Scroll to top on step change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
     addBrandEntry() {
         const brandEntries = document.getElementById('brandEntries');
         const newEntry = document.createElement('div');
